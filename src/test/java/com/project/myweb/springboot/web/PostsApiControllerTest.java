@@ -3,8 +3,11 @@ package com.project.myweb.springboot.web;
 import com.project.myweb.springboot.domain.posts.Posts;
 import com.project.myweb.springboot.domain.posts.PostsRepository;
 import com.project.myweb.springboot.web.dto.PostsSaveRequestDto;
+import com.project.myweb.springboot.web.dto.PostsUpdateRequestDto;
+import javafx.geometry.Pos;
 import org.junit.After;
 import org.junit.Test;
+import org.junit.experimental.theories.suppliers.TestedOn;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -59,5 +62,24 @@ public class PostsApiControllerTest {
         List<Posts> all = postsRepository.findAll();
         assertThat(all.get(0).getTitle()).isEqualTo(title);
         assertThat(all.get(0).getContent()).isEqualTo(content);
+    }
+
+    @Test
+    public void Posts_수정된다() throws Exception {
+        //given
+        Posts savedPosts = postsRepository.save(Posts.builder()
+                .title("title")
+                .content("content")
+                .author("author")
+                .build());
+
+        Long updateId = savedPosts.getId();
+        String expectedTitle = "title2";
+        String expectedCotent = "content2";
+
+        PostsUpdateRequestDto requestDto = PostsUpdateRequestDto.builder()
+                .title(expectedTitle)
+                .content(expectedCotent)
+                .build();
     }
 }
